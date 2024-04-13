@@ -6,7 +6,7 @@ Title = "Enjoy!";
 Duration = 3;
 });
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/RFS-cmd/-/main/first"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/yess.lua"))()
 
 Aiming.TargetPart = {"Head"}
 Aiming.FOV = 170
