@@ -16,7 +16,7 @@ local notificationPositions = {
     ["TopLeft"] = UDim2.new(0.06, 0, 0.001, 0),
     ["TopRight"] = UDim2.new(0.8, 0, 0.001, 0),
 
-    ["Bottom"] = UDim2.new(0.445, 0, 0.9, 0)
+    ["Bottom"] = UDim2.new(0.445, 0, 0.3, 0)
 }; 
 
 -- functions 
