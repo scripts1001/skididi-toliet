@@ -16,7 +16,7 @@ end)
 local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/dopdop.lua"))();
 local notifications = notificationLibrary.new({            
     NotificationLifetime = 3, 
-    NotificationPosition = "Middle",
+    NotificationPosition = "Bottom",
     
     TextFont = Enum.Font.Code,
     TextColor = Color3.fromRGB(0, 0, 0),
