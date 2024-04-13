@@ -133,6 +133,15 @@ local notifications = {}; do
     end
 
     function notifications:Notify(text)
+    -- Move existing notifications down
+        for _, existingNotification in ipairs(self.ui.notificationsFrame:GetChildren()) do
+            if existingNotification:IsA("GuiObject") then
+                existingNotification.Position = UDim2.new(existingNotification.Position.X.Scale, existingNotification.Position.X.Offset, 
+                                                           existingNotification.Position.Y.Scale, existingNotification.Position.Y.Offset + 15)
+            end
+        end
+
+        -- Create new notification at the top
         local notification = createObject("TextLabel", {
             Name = "notification",
             Parent = self.ui.notificationsFrame,
@@ -145,22 +154,14 @@ local notifications = {}; do
             TextColor3 = self.TextColor,
             TextSize = self.TextSize,
             TextStrokeColor3 = self.TextStrokeColor,
-            TextStrokeTransparency = self.TextStrokeTransparency
+            TextStrokeTransparency = self.TextStrokeTransparency,
+            Position = UDim2.new(0, 0, 0, 0) -- Ensure new notification starts at the top
         });  
 
-        -- Move existing notifications down
-        for _, existingNotification in ipairs(self.ui.notificationsFrame:GetChildren()) do
-            if existingNotification:IsA("GuiObject") then
-                existingNotification.Position = UDim2.new(existingNotification.Position.X.Scale, existingNotification.Position.X.Offset, 
-                                                           existingNotification.Position.Y.Scale, existingNotification.Position.Y.Offset + 15)
-            end
-        end
-    
         task.delay(self.NotificationLifetime, function()
             fadeObject(notification, function()
                 notification:Destroy();
             end);
         end);
     end
-
 return notifications 
