@@ -1,4 +1,4 @@
-local AkaliNotif = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/Dynissimo/main/Scripts/AkaliNotif.lua"))();
+local AkaliNotif = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/no.lua"))();
 local Notify = AkaliNotif.Notify;
 Notify({
 Description = "some_random dude loaded";
