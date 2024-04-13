@@ -23,22 +23,11 @@ local function Image(ID, Button)
 end
 
 local function Round2px()
-    local NewImage = Image("http://www.roblox.com/asset/?id=5761488251");
-    NewImage.ScaleType = Enum.ScaleType.Slice;
-    NewImage.SliceCenter = Rect.new(2, 2, 298, 298);
-    NewImage.ImageColor3 = Color3.fromRGB(30, 30, 30);
-    
-    -- Adding green outline
-    local Outline = Instance.new("ImageLabel")
-    Outline.Image = "http://www.roblox.com/asset/?id=5761488251"; -- Same as background
-    Outline.BackgroundTransparency = 1;
-    Outline.Size = UDim2.new(1, 6, 1, 6); -- Adjust outline thickness here
-    Outline.Position = UDim2.new(0, -3, 0, -3); -- Adjust outline offset here
-    Outline.ImageColor3 = Color3.fromRGB(0, 255, 0); -- Green color
-    Outline.ZIndex = NewImage.ZIndex - 1; -- Make sure outline is behind the background
-    Outline.Parent = NewImage;
-
-    return NewImage;
+	local NewImage = Image("http://www.roblox.com/asset/?id=5761488251");
+	NewImage.ScaleType = Enum.ScaleType.Slice;
+	NewImage.SliceCenter = Rect.new(2, 2, 298, 298);
+	NewImage.ImageColor3 = Color3.fromRGB(30, 30, 30);
+	return NewImage;
 end
 
 local function Shadow2px()
@@ -118,7 +107,7 @@ local function Label(Text, Font, Size, Button)
 	Label.BackgroundTransparency = 1;
 	Label.TextXAlignment = Enum.TextXAlignment.Left;
 	Label.RichText = true;
-	Label.TextColor3 = Color3.fromRGB(255, 255, 255);
+	Label.TextColor3 = Color3.fromRGB(170, 255, 0);
 	return Label;
 end
 
