@@ -1,5 +1,5 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/yess.lua"))()
-local Notify = AkaliNotif.Notify;
+local Notify = notif.Notify;
 Notify({
 Description = "Emerald, Loaded.";
 Title = "Enjoy!";
