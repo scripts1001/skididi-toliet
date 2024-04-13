@@ -14,7 +14,7 @@ Aiming.FOVSides = 250
 Aiming.HitChance = 170
 Aiming.ShowFOV = false
 getgenv().AutoPrediction = true
-getgenv().Prediction = 0.157
+getgenv().Prediction = 0.147
 -- auto prediction highly recommended...
 if getgenv().AutoPrediction == true then
 function h()
