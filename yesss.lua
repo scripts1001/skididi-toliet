@@ -1,11 +1,10 @@
-local AkaliNotif = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/no.lua"))();
+loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/yess.lua"))()
 local Notify = AkaliNotif.Notify;
 Notify({
-Description = "some_random dude loaded";
-Title = "have fun:D";
-Duration = 70;
+Description = "Emerald, Loaded.";
+Title = "Enjoy!";
+Duration = 3;
 });
-loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/yess.lua"))()
 
 Aiming.TargetPart = {"Head"}
 Aiming.FOV = 170
