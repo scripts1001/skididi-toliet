@@ -151,7 +151,7 @@ function library.new(library_title, cfg_location)
         BorderColor3 = Color3.fromRGB(80, 200, 120),
         Position = UDim2.new(0.5, 0, 0.5, 0),
         Size = UDim2.new(0, 700, 0, 500),
-        Image = "http://www.roblox.com/asset/?id=7300333488",
+        Image = "http://www.roblox.com/library/17135365657/gg",
         AutoButtonColor = false,
         Modal = true,
     }, ScreenGui)
