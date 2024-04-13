@@ -891,7 +891,7 @@ end
                                 Color = ColorSequence.new {
                                     ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
                                     ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 0, 255)),
-                                    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 0, 255)),
+                                    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(80, 200, 120)),
                                     ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)),
                                     ColorSequenceKeypoint.new(0.67, Color3.fromRGB(0, 255, 0)),
                                     ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 255, 0)),
