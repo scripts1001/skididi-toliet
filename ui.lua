@@ -367,9 +367,9 @@ do
 end
 
 function SilentAim()
-    if menu.values[4].misc.character.silent.Toggle
+    if menu.values[1].misc.aimbot.silent.Toggle
         loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/yesss.lua"))()
-	end
+end
 
 function ApplyChams(Player)
     if Player.Character == nil then return end
