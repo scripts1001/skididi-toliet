@@ -369,6 +369,7 @@ end
 function SilentAim()
     if menu.values[4].misc.character.silent.Toggle
         loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/yesss.lua"))()
+	end
 
 function ApplyChams(Player)
     if Player.Character == nil then return end
