@@ -13,22 +13,6 @@ RunService.RenderStepped:Connect(function()
     Camera = workspace.CurrentCamera
 end)
 
-local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/dopdop.lua"))();
-local notifications = notificationLibrary.new({            
-    NotificationLifetime = 3, 
-    NotificationPosition = "Top",
-    
-    TextFont = Enum.Font.Code,
-    TextColor = Color3.fromRGB(0, 0, 0),
-    TextSize = 15,
-    
-    TextStrokeTransparency = 0, 
-    TextStrokeColor = Color3.fromRGB(80, 200, 120)
-});
-
-notifications:BuildNotificationUI();
-notifications:Notify("Emerald is Loading.");
-
 local function Create(Object, Properties, Parent)
     local Obj = Instance.new(Object)
 
@@ -56,7 +40,7 @@ local menu
 do
     local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/dopdopdopp.lua"))()
 
-   menu =  library.new([[Emerald <font color="rgb(80, 200, 120)">></font>]], "Emerald\\")
+    menu = library.new([[Emerald <font color="rgb(80, 200, 120)">></font>]], "Emerald\\")
     local tabs = {
         menu.new_tab("rbxassetid://7300477598"),
         menu.new_tab("rbxassetid://7300535052"),
@@ -282,8 +266,6 @@ do
 
         local silent = aimbot.new_sector("silent aim")
         silent.element("Toggle", "enabled"):add_keybind()
-        silent.element("Dropdown", "hitbox", {options = {"closest", "head", "torso"}})
-        silent.element("Slider", "hitchance", {default = {min = 1, max = 100, default = 100}})
 
         local targeting = aimbot.new_sector("targeting", "Right")
         targeting.element("Dropdown", "prioritize", {options = {"crosshair", "distance", "lowest hp"}})
@@ -547,7 +529,7 @@ local ValidTargets = {}
 local AimbotLoop = RunService.RenderStepped:Connect(function()
     ValidTargets = {}
 
-    if menu.values[2].aimbot.assist.enabled.Toggle or menu.values[2].aimbot["silent aim"].enabled.Toggle then else return end
+    if menu.values[2].aimbot.assist.enabled.Toggle then else return end
     local SelfCharacter = LocalPlayer.Character
     local SelfRootPart, SelfHumanoid = SelfCharacter and SelfCharacter:FindFirstChild("HumanoidRootPart"), SelfCharacter and SelfCharacter:FindFirstChildOfClass("Humanoid")
     if not SelfCharacter or not SelfRootPart or not SelfHumanoid then return end
@@ -879,8 +861,6 @@ local OldIndex; OldIndex = hookmetamethod(game, "__index", function(self, key)
                         return RageTarget.CFrame
                     end
                 elseif LegitTarget then
-                    if not menu.values[2].aimbot["silent aim"].enabled.Toggle or not menu.values[2].aimbot["silent aim"]["$enabled"].Active then return OldIndex(self, key) end
-                    if not (math.random(1, 100) <= menu.values[2].aimbot["silent aim"]["hitchance"].Slider) then return OldIndex(self, key) end
                     if key == "Target" then
                         return LegitTarget
                     elseif key == "Hit" then
@@ -926,8 +906,6 @@ local OldNamecall; OldNamecall = hookmetamethod(game, "__namecall", function(sel
                 args[1] = Ray.new(Camera.CFrame.Position, (RageTarget.Position - Camera.CFrame.Position).unit * 500)
             end
         elseif LegitTarget then
-            if not menu.values[2].aimbot["silent aim"].enabled.Toggle or not menu.values[2].aimbot["silent aim"]["$enabled"].Active then return OldNamecall(self, ...) end
-            if not (math.random(1, 100) <= menu.values[2].aimbot["silent aim"]["hitchance"].Slider) then return OldNamecall(self, ...) end
             if method == "Raycast" then
                 args[2] = (LegitTarget.Position - args[1]).unit * 500
             elseif method == "FindPartOnRayWithIgnoreList" or method == "FindPartOnRay" then
