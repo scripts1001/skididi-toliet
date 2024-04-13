@@ -8,7 +8,7 @@ local notifications = notificationLibrary.new({
     TextSize = 15,
     
     TextStrokeTransparency = 0, 
-    TextStrokeColor = Color3.fromRGB(0, 0, 0)
+    TextStrokeColor = Color3.fromRGB(80, 200, 120)
 });
 
 notifications:BuildNotificationUI();
