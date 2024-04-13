@@ -13,6 +13,22 @@ RunService.RenderStepped:Connect(function()
     Camera = workspace.CurrentCamera
 end)
 
+local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/laagginq/ui-libraries/main/xaxas-notification/src.lua"))();
+local notifications = notificationLibrary.new({            
+    NotificationLifetime = 3, 
+    NotificationPosition = "Middle",
+    
+    TextFont = Enum.Font.Code,
+    TextColor = Color3.fromRGB(0, 0, 0),
+    TextSize = 15,
+    
+    TextStrokeTransparency = 0, 
+    TextStrokeColor = Color3.fromRGB(80, 200, 120)
+});
+
+notifications:BuildNotificationUI();
+notifications:Notify("Emerald is Loading.");
+
 local function Create(Object, Properties, Parent)
     local Obj = Instance.new(Object)
 
