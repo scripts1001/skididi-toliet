@@ -1,8 +1,8 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/venus.lua", true))()
 
-local main = library:Load({Name = "Venus Library", Theme = "Dark", SizeX = 440, SizeY = 480, ColorOverrides = {}})
+local main = library:Load({Name = "Emerald", Theme = "Dark", SizeX = 550, SizeY = 600, ColorOverrides = {}})
 local aimbot = main:Tab("Aimbot")
-local section = aimbot:Section({Name = "Section", column = 1})
+local section = aimbot:Section({Name = "Main", column = 1})
 
 -- object:Hide()
 -- object:Show()
@@ -56,7 +56,7 @@ end})
 -- toggleKeybind:Set(key)
 -- toggleKeybind:Toggle(bool)
 
-local colorPicker = section:ColorPicker({name = "Color Picker", Default = Color3.fromRGB(255, 0, 255),  Flag = "Color Picker", Callback = function(color)
+local colorPicker = section:ColorPicker({name = "Color Picker", Default = Color3.fromRGB(80, 200, 120),  Flag = "Color Picker", Callback = function(color)
    print(color.r * 255, color.g * 255, color.b * 255)
 end})
 
