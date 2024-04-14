@@ -1,4 +1,4 @@
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/vozoid/ui-libraries/main/venus/source.lua", true))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/venus.lua", true))()
 
 local main = library:Load({Name = "Venus Library", Theme = "Dark", SizeX = 440, SizeY = 480, ColorOverrides = {}})
 local aimbot = main:Tab("Aimbot")
