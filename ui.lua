@@ -42,7 +42,7 @@ do
     menu = library.new([[Emerald<font color="rgb(80, 200, 120)">.lua</font>]], "Emerald\\")
     local tabs = {
         menu.new_tab("rbxassetid://7300477598"),
-        menu.new_tab("rbxassetid://17137755033"),
+        menu.new_tab("rbxassetid://17138035097"),
         menu.new_tab("rbxassetid://7300480952"),
         menu.new_tab("rbxassetid://7300486042"),
         menu.new_tab("rbxassetid://7300489566"),
@@ -247,8 +247,6 @@ do
 
         local silent = aimbot.new_sector("silent aim")
         silent.element("Toggle", "enabled"):add_keybind()
-        silent.element("Dropdown", "hitbox", {options = {"closest", "head", "torso"}})
-        silent.element("Slider", "hitchance", {default = {min = 1, max = 100, default = 100}})
 
         local targeting = aimbot.new_sector("targeting", "Right")
         targeting.element("Dropdown", "prioritize", {options = {"crosshair", "distance", "lowest hp"}})
@@ -641,9 +639,9 @@ RunService.RenderStepped:Connect(function()
 
         local Angle do
             Angle = -math.atan2(Camera.CFrame.LookVector.Z, Camera.CFrame.LookVector.X) + math.rad(-90)
-            if menu.values[1].antiaim.direction["Yaw base"].Dropdown == "random" then
+            if menu.values[1].antiaim.direction["yaw base"].Dropdown == "random" then
                 Angle = -math.atan2(Camera.CFrame.LookVector.Z, Camera.CFrame.LookVector.X) + math.rad(math.random(0, 360))
-            elseif menu.values[1].antiaim.direction["Yaw base"].Dropdown == "spin" then
+            elseif menu.values[1].antiaim.direction["yaw base"].Dropdown == "spin" then
                 Angle = -math.atan2(Camera.CFrame.LookVector.Z, Camera.CFrame.LookVector.X) + tick() * 10 % 360
             end
         end
@@ -651,9 +649,9 @@ RunService.RenderStepped:Connect(function()
         local Offset = math.rad(menu.values[1].antiaim.direction["yaw offset"].Slider)
         Jitter = not Jitter
         if Jitter then
-            if menu.values[1].antiaim.direction["Yaw modifier"].Dropdown == "jitter" then
+            if menu.values[1].antiaim.direction["yaw modifier"].Dropdown == "jitter" then
                 Offset = math.rad(menu.values[1].antiaim.direction["modifier offset"].Slider)
-            elseif menu.values[1].antiaim.direction["Yaw modifier"].Dropdown == "offset jitter" then
+            elseif menu.values[1].antiaim.direction["yaw modifier"].Dropdown == "offset jitter" then
                 Offset = Offset + math.rad(menu.values[1].antiaim.direction["modifier offset"].Slider)
             end
         end
@@ -662,7 +660,7 @@ RunService.RenderStepped:Connect(function()
             local X, Y, Z = _CFrame:ToOrientation()
             return CFrame.new(_CFrame.Position) * CFrame.Angles(0, Y, 0)
         end
-        if menu.values[1].antiaim.direction["Yaw base"].Dropdown == "targets" then
+        if menu.values[1].antiaim.direction["yaw base"].Dropdown == "targets" then
             local Target
             local Closest = 9999
             for _,Player in next, Players:GetPlayers() do
@@ -770,18 +768,7 @@ local OldIndex; OldIndex = hookmetamethod(game, "__index", function(self, key)
             end
         end
     end
-
     return OldIndex(self, key)
-end)
-local OldNamecall; OldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
-    local args = {...}
-    local method = tostring(getnamecallmethod())
-
-    if checkcaller() then
-        return OldNamecall(self, unpack(args))
-    end
-
-    return OldNamecall(self, unpack(args))
 end)
 
 local PlayerDrawings = {}
@@ -855,8 +842,16 @@ Players.PlayerRemoving:Connect(function(Player)
     end
 end)
 
+local ValidTargets = {}
 local AimbotLoop = RunService.RenderStepped:Connect(function()
     ValidTargets = {}
+
+    if menu.values[2].aimbot.assist.enabled.Toggle or menu.values[2].aimbot["silent aim"].enabled.Toggle then else return end
+    local SelfCharacter = LocalPlayer.Character
+    local SelfRootPart, SelfHumanoid = SelfCharacter and SelfCharacter:FindFirstChild("HumanoidRootPart"), SelfCharacter and SelfCharacter:FindFirstChildOfClass("Humanoid")
+    if not SelfCharacter or not SelfRootPart or not SelfHumanoid then return end
+    if menu.open then return end
+
     local Params                      = RaycastParams.new()
     Params.FilterType                 = Enum.RaycastFilterType.Blacklist
     Params.IgnoreWater                = true
@@ -871,8 +866,6 @@ local AimbotLoop = RunService.RenderStepped:Connect(function()
         local RootPart, Humanoid = Character and Character:FindFirstChild("HumanoidRootPart"), Character and Character:FindFirstChildOfClass("Humanoid")
         if not Character or not RootPart or not Humanoid then continue end
         if not Character:FindFirstChild("Head") then continue end
-        if menu.values[5].menu["Player check"]["forcefield check"].Toggle and Character:FindFirstChildOfClass("ForceField") then continue end
-        if not menu.values[5].menu["Player check"]["free for all"].Toggle and Player.Team == LocalPlayer.Team then continue end
         if Player == LocalPlayer then continue end
 
         local Head
@@ -922,69 +915,6 @@ local AimbotLoop = RunService.RenderStepped:Connect(function()
         table.sort(ValidTargets, function(a, b) return a[5] < b[5] end)
     end
 end)
-
-local mainsilentaim
-    if menu.values[2].aimbot["silent aim"].enabled.Toggle then 
-        local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/dopdop.lua"))();
-        local notifications = notificationLibrary.new({            
-        NotificationLifetime = 3, 
-        NotificationPosition = "Top",
-    
-        TextFont = Enum.Font.Code,
-        TextColor = Color3.fromRGB(0, 0, 0),
-        TextSize = 15,
-    
-        TextStrokeTransparency = 0, 
-        TextStrokeColor = Color3.fromRGB(80, 200, 120)
-        });
-
-        notifications:BuildNotificationUI();
-        notifications:Notify("Emerald Silent Aim, Loaded.");
-
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/yess.lua"))()
-
-        Aiming.TargetPart = {"Head"}
-        Aiming.FOV = 170
-        Aiming.FOVSides = 250
-        Aiming.HitChance = 170
-        Aiming.ShowFOV = true
-        getgenv().AutoPrediction = true
-        getgenv().Prediction = 0.147
-        -- auto prediction highly recommended...
-        if getgenv().AutoPrediction == true then
-        function h()
-                while true do wait()
-        local pingvalue = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString()
-                local split = string.split(pingvalue,'(')
-                local ping = tonumber(split[1])
-                if ping > 200 and ping < 300 then 
-                    getgenv().Predict = 0.18742
-                    elseif ping > 180 and ping < 195 then 
-                    getgenv().Predict = 0.16779123
-                elseif ping > 140 and ping < 180 then 
-                    etgenv().Predict = 0.16
-                elseif ping > 110 and ping < 140 then 
-                    getgenv().Predict = 0.15934
-                elseif ping < 105 then
-                    getgenv().Predict = 0.138
-                elseif ping < 90 then
-                    getgenv().Predict = 0.136
-                elseif ping < 80 then
-                    getgenv().Predict = 0.134
-                elseif ping < 70 then
-                    getgenv().Predict = 0.131
-                elseif ping < 60 then
-                    getgenv().Predict = 0.1229
-                elseif ping < 50 then
-                    getgenv().Predict = 0.1225
-                elseif ping < 40 then
-                    getgenv().Predict = 0.1256
-                end
-            end
-        getgenv().Prediction = getgenv().Predict
-    end
-end
-spawn(h)
 
 local ESPLoop = game:GetService("RunService").RenderStepped:Connect(function()
     for _,Player in pairs (Players:GetPlayers()) do
