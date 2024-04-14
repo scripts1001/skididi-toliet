@@ -1,3 +1,4 @@
+
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/venus.lua", true))()
 
 local main = library:Load({Name = [[Emerald<font color="rgb(80, 200, 120)">.lua</font>]], Theme = "Dark", SizeX = 550, SizeY = 600, ColorOverrides = {}})
@@ -75,3 +76,19 @@ print(library.Flags["ToggleColorPicker"])
 -- colorPickerToggle:Toggle(bool)
 -- colorPickerToggle:SetHex(hex)
 -- colorPickerToggle:SetRGB(rgb Color3)
+
+local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/dopdop.lua"))();
+local notifications = notificationLibrary.new({            
+    NotificationLifetime = 3, 
+    NotificationPosition = "Top",
+    
+    TextFont = Enum.Font.Code,
+    TextColor = Color3.fromRGB(0, 0, 0),
+    TextSize = 25,
+    
+    TextStrokeTransparency = 0, 
+    TextStrokeColor = Color3.fromRGB(80, 200, 120)
+});
+
+notifications:BuildNotificationUI();
+notifications:Notify("Emerald Is Now Loaded.");
