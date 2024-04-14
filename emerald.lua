@@ -12,7 +12,6 @@ local Camera      = workspace.CurrentCamera
 RunService.RenderStepped:Connect(function()
     Camera = workspace.CurrentCamera
 end)
-
 local function Create(Object, Properties, Parent)
     local Obj = Instance.new(Object)
 
@@ -247,6 +246,8 @@ do
 
         local silent = aimbot.new_sector("silent aim")
         silent.element("Toggle", "enabled"):add_keybind()
+        silent.element("Slider", "fov size", {default = {min = 10, max = 500, default = 50}})
+        silent.element("Slider", "fov sides", {default = {min = 1, max = 250, default = 27}})
 
         local targeting = aimbot.new_sector("targeting", "Right")
         targeting.element("Dropdown", "prioritize", {options = {"crosshair", "distance", "lowest hp"}})
@@ -460,15 +461,70 @@ LocalPlayer:GetPropertyChangedSignal("Team"):Connect(function()
     end
 end)
 
+if menu.values[2].aimbot.assist.enabled.Toggle or menu.values[2].aimbot["silent aim"].enabled.Toggle then
+    local Aiming = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/yes.lua"))() -- Load Aiming module
+    Aiming.TargetPart = {"UpperTorso"}
+    Aiming.FOV = menu.values[2].aimbot.silent["fov size"].Slider
+    Aiming.FOVSides = menu.values[2].aimbot.silent["fov sides"].Slider
+    Aiming.HitChance = 100
+    Aiming.ShowFOV = true
+    getgenv().AutoPrediction = true
+    getgenv().Prediction = 0.137
+
+    if getgenv().AutoPrediction then
+        function h()
+            while true do 
+                wait()
+                local pingvalue = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString()
+                local split = string.split(pingvalue, '(')
+                local ping = tonumber(split[1])
+                if ping > 200 and ping < 300 then 
+                    getgenv().Prediction = 0.18742
+                elseif ping > 180 and ping < 195 then 
+                    getgenv().Prediction = 0.16779123
+                elseif ping > 140 and ping < 180 then 
+                    getgenv().Prediction = 0.16
+                elseif ping > 110 and ping < 140 then 
+                    getgenv().Prediction = 0.15934
+                elseif ping < 105 then
+                    getgenv().Prediction = 0.138
+                elseif ping < 90 then
+                    getgenv().Prediction = 0.136
+                elseif ping < 80 then
+                    getgenv().Prediction = 0.134
+                elseif ping < 70 then
+                    getgenv().Prediction = 0.131
+                elseif ping < 60 then
+                    getgenv().Prediction = 0.1229
+                elseif ping < 50 then
+                    getgenv().Prediction = 0.1225
+                elseif ping < 40 then
+                    getgenv().Prediction = 0.1256
+                end
+            end
+        end
+        spawn(h)
+    end
+    local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/dopdop.lua"))();
+    local notifications = notificationLibrary.new({            
+        NotificationLifetime = 3, 
+        NotificationPosition = "Top",
+            
+        TextFont = Enum.Font.Code,
+        TextColor = Color3.fromRGB(0, 0, 0),
+        TextSize = 25,
+            
+        TextStrokeTransparency = 0, 
+        TextStrokeColor = Color3.fromRGB(80, 200, 120)
+    });
+        
+    notifications:BuildNotificationUI();
+    notifications:Notify("Emerald Is Now Loaded.");
+end
+
 local ValidTargets = {}
 local AimbotLoop = RunService.RenderStepped:Connect(function()
     ValidTargets = {}
-
-    if menu.values[2].aimbot.assist.enabled.Toggle or menu.values[2].aimbot["silent aim"].enabled.Toggle then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/yesss.lua"))()
-    else 
-        return 
-    end
     local SelfCharacter = LocalPlayer.Character
     local SelfRootPart, SelfHumanoid = SelfCharacter and SelfCharacter:FindFirstChild("HumanoidRootPart"), SelfCharacter and SelfCharacter:FindFirstChildOfClass("Humanoid")
     if not SelfCharacter or not SelfRootPart or not SelfHumanoid then return end
@@ -1092,7 +1148,7 @@ local notifications = notificationLibrary.new({
     
     TextFont = Enum.Font.Code,
     TextColor = Color3.fromRGB(0, 0, 0),
-    TextSize = 15,
+    TextSize = 25,
     
     TextStrokeTransparency = 0, 
     TextStrokeColor = Color3.fromRGB(80, 200, 120)
