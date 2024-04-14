@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/venus.lua", true))()
 
-local main = library:Load({Name = "Emerald", Theme = "Dark", SizeX = 550, SizeY = 600, ColorOverrides = {}})
+local main = library:Load({Name = [[Emerald<font color="rgb(80, 200, 120)">.lua</font>]], Theme = "Dark", SizeX = 550, SizeY = 600, ColorOverrides = {}})
 local aimbot = main:Tab("Aimbot")
 local section = aimbot:Section({Name = "Main", column = 1})
 
