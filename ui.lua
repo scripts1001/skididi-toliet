@@ -855,6 +855,137 @@ Players.PlayerRemoving:Connect(function(Player)
     end
 end)
 
+local AimbotLoop = RunService.RenderStepped:Connect(function()
+    ValidTargets = {}
+    local Params                      = RaycastParams.new()
+    Params.FilterType                 = Enum.RaycastFilterType.Blacklist
+    Params.IgnoreWater                = true
+    Params.FilterDescendantsInstances = {Camera, SelfCharacter}
+
+    local Closest = 999999
+
+    local CameraPosition = Camera.CFrame.Position
+    local MousePosition  = Vector2.new(Mouse.X, Mouse.Y)
+    for _,Player in pairs (Players:GetPlayers()) do
+        local Character = Player.Character
+        local RootPart, Humanoid = Character and Character:FindFirstChild("HumanoidRootPart"), Character and Character:FindFirstChildOfClass("Humanoid")
+        if not Character or not RootPart or not Humanoid then continue end
+        if not Character:FindFirstChild("Head") then continue end
+        if menu.values[5].menu["Player check"]["forcefield check"].Toggle and Character:FindFirstChildOfClass("ForceField") then continue end
+        if not menu.values[5].menu["Player check"]["free for all"].Toggle and Player.Team == LocalPlayer.Team then continue end
+        if Player == LocalPlayer then continue end
+
+        local Head
+        for _,Part in next, Character:GetChildren() do
+            if not Part:IsA("LocalScript") and Part.Name == "Head" then Head = Part break end
+        end
+        if not Head then continue end
+
+        local DistanceFromCharacter = (Camera.CFrame.Position - RootPart.Position).Magnitude
+        if menu.values[2].aimbot.targeting["max distance"].Slider < DistanceFromCharacter then continue end
+
+        local Pos, OnScreen = Camera:WorldToViewportPoint(RootPart.Position)
+        if not OnScreen then continue end
+        local Magnitude = (Vector2.new(Pos.X, Pos.Y) - MousePosition).Magnitude
+        if not (Magnitude < menu.values[2].aimbot.fov["fov size"].Slider) then continue end
+
+        local Hitbox = menu.values[2].aimbot.assist.hitbox.Dropdown == "head" and Head or RootPart
+        if menu.values[2].aimbot.assist.hitbox.Dropdown == "closest" then
+            local HeadPos  = Camera:WorldToViewportPoint(Head.Position)
+            local TorsoPos = Camera:WorldToViewportPoint(RootPart.Position)
+
+            local HeadDistance  = (Vector2.new(HeadPos.X, HeadPos.Y) - MousePosition).Magnitude
+            local TorsoDistance = (Vector2.new(TorsoPos.X, TorsoPos.Y) - MousePosition).Magnitude
+
+            Hitbox = HeadDistance < TorsoDistance and Head or RootPart
+        end
+
+        if menu.values[2].aimbot.targeting["visible check"].Toggle then
+            local Direction = Hitbox.Position - CameraPosition
+            local Result    = workspace:Raycast(CameraPosition, Direction.Unit * Direction.Magnitude, Params)
+
+            if not Result then continue end
+            local Hit, Pos  = Result.Instance, Result.Position
+
+            if not Hit:FindFirstAncestor(Player.Name) then continue end
+            table.insert(ValidTargets, {Player, Hitbox, Magnitude, DistanceFromCharacter, Humanoid.Health})
+        else
+            table.insert(ValidTargets, {Player, Hitbox, Magnitude, DistanceFromCharacter, Humanoid.Health})
+        end
+    end
+
+    if menu.values[2].aimbot.targeting.prioritize.Dropdown == "crosshair" then
+        table.sort(ValidTargets, function(a, b) return a[3] < b[3] end)
+    elseif menu.values[2].aimbot.targeting.prioritize.Dropdown == "distance" then
+        table.sort(ValidTargets, function(a, b) return a[4] < b[4] end)
+    elseif menu.values[2].aimbot.targeting.prioritize.Dropdown == "lowest hp" then
+        table.sort(ValidTargets, function(a, b) return a[5] < b[5] end)
+    end
+end)
+
+local mainsilentaim
+    if menu.values[2].aimbot["silent aim"].enabled.Toggle then 
+        local notificationLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/dopdop.lua"))();
+        local notifications = notificationLibrary.new({            
+        NotificationLifetime = 3, 
+        NotificationPosition = "Top",
+    
+        TextFont = Enum.Font.Code,
+        TextColor = Color3.fromRGB(0, 0, 0),
+        TextSize = 15,
+    
+        TextStrokeTransparency = 0, 
+        TextStrokeColor = Color3.fromRGB(80, 200, 120)
+        });
+
+        notifications:BuildNotificationUI();
+        notifications:Notify("Emerald Silent Aim, Loaded.");
+
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/yess.lua"))()
+
+        Aiming.TargetPart = {"Head"}
+        Aiming.FOV = 170
+        Aiming.FOVSides = 250
+        Aiming.HitChance = 170
+        Aiming.ShowFOV = true
+        getgenv().AutoPrediction = true
+        getgenv().Prediction = 0.147
+        -- auto prediction highly recommended...
+        if getgenv().AutoPrediction == true then
+        function h()
+                while true do wait()
+        local pingvalue = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString()
+                local split = string.split(pingvalue,'(')
+                local ping = tonumber(split[1])
+                if ping > 200 and ping < 300 then 
+                    getgenv().Predict = 0.18742
+                    elseif ping > 180 and ping < 195 then 
+                    getgenv().Predict = 0.16779123
+                elseif ping > 140 and ping < 180 then 
+                    etgenv().Predict = 0.16
+                elseif ping > 110 and ping < 140 then 
+                    getgenv().Predict = 0.15934
+                elseif ping < 105 then
+                    getgenv().Predict = 0.138
+                elseif ping < 90 then
+                    getgenv().Predict = 0.136
+                elseif ping < 80 then
+                    getgenv().Predict = 0.134
+                elseif ping < 70 then
+                    getgenv().Predict = 0.131
+                elseif ping < 60 then
+                    getgenv().Predict = 0.1229
+                elseif ping < 50 then
+                    getgenv().Predict = 0.1225
+                elseif ping < 40 then
+                    getgenv().Predict = 0.1256
+                end
+            end
+        getgenv().Prediction = getgenv().Predict
+    end
+end
+spawn(h)
+
 local ESPLoop = game:GetService("RunService").RenderStepped:Connect(function()
     for _,Player in pairs (Players:GetPlayers()) do
         local PlayerDrawing = PlayerDrawings[Player]
