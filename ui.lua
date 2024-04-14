@@ -97,9 +97,9 @@ do
 
         local direction = antiaim.new_sector("direction")
         direction.element("Toggle", "enabled"):add_keybind()
-        direction.element("Dropdown", "Y base", {options = {"camera", "random", "spin"}})
-        direction.element("Slider", "Y offset", {default = {min = -180, max = 180, default = 0}})
-        direction.element("Dropdown", "Y modifier", {options = {"none", "jitter", "offset jitter"}})
+        direction.element("Dropdown", "Yaw base", {options = {"camera", "random", "spin"}})
+        direction.element("Slider", "Yaw offset", {default = {min = -180, max = 180, default = 0}})
+        direction.element("Dropdown", "Yaw modifier", {options = {"none", "jitter", "offset jitter"}})
         direction.element("Slider", "modifier offset", {default = {min = -180, max = 180, default = 0}})
         direction.element("Toggle", "force angles")
 
@@ -488,8 +488,6 @@ local AimbotLoop = RunService.RenderStepped:Connect(function()
         local RootPart, Humanoid = Character and Character:FindFirstChild("HumanoidRootPart"), Character and Character:FindFirstChildOfClass("Humanoid")
         if not Character or not RootPart or not Humanoid then continue end
         if not Character:FindFirstChild("Head") then continue end
-        if menu.values[5].menu["player check"]["forcefield check"].Toggle and Character:FindFirstChildOfClass("ForceField") then continue end
-        if not menu.values[5].menu["player check"]["free for all"].Toggle and Player.Team == LocalPlayer.Team then continue end
         if Player == LocalPlayer then continue end
 
         local Head
@@ -578,8 +576,6 @@ local RageLoop = RunService.RenderStepped:Connect(function()
         local RootPart, Humanoid = Character and Character:FindFirstChild("HumanoidRootPart"), Character and Character:FindFirstChildOfClass("Humanoid")
         if not Character or not RootPart or not Humanoid then continue end
         if not Character:FindFirstChild("Head") then continue end
-        if menu.values[5].menu["player check"]["forcefield check"].Toggle and Character:FindFirstChildOfClass("ForceField") then continue end
-        if not menu.values[5].menu["player check"]["free for all"].Toggle and Player.Team == LocalPlayer.Team then continue end
         if Humanoid.Health == 0 then continue end
         if Player == LocalPlayer then continue end
 
@@ -645,9 +641,9 @@ RunService.RenderStepped:Connect(function()
 
         local Angle do
             Angle = -math.atan2(Camera.CFrame.LookVector.Z, Camera.CFrame.LookVector.X) + math.rad(-90)
-            if menu.values[1].antiaim.direction["yaw base"].Dropdown == "random" then
+            if menu.values[1].antiaim.direction["Yaw base"].Dropdown == "random" then
                 Angle = -math.atan2(Camera.CFrame.LookVector.Z, Camera.CFrame.LookVector.X) + math.rad(math.random(0, 360))
-            elseif menu.values[1].antiaim.direction["yaw base"].Dropdown == "spin" then
+            elseif menu.values[1].antiaim.direction["Yaw base"].Dropdown == "spin" then
                 Angle = -math.atan2(Camera.CFrame.LookVector.Z, Camera.CFrame.LookVector.X) + tick() * 10 % 360
             end
         end
@@ -655,9 +651,9 @@ RunService.RenderStepped:Connect(function()
         local Offset = math.rad(menu.values[1].antiaim.direction["yaw offset"].Slider)
         Jitter = not Jitter
         if Jitter then
-            if menu.values[1].antiaim.direction["yaw modifier"].Dropdown == "jitter" then
+            if menu.values[1].antiaim.direction["Yaw modifier"].Dropdown == "jitter" then
                 Offset = math.rad(menu.values[1].antiaim.direction["modifier offset"].Slider)
-            elseif menu.values[1].antiaim.direction["yaw modifier"].Dropdown == "offset jitter" then
+            elseif menu.values[1].antiaim.direction["Yaw modifier"].Dropdown == "offset jitter" then
                 Offset = Offset + math.rad(menu.values[1].antiaim.direction["modifier offset"].Slider)
             end
         end
@@ -666,7 +662,7 @@ RunService.RenderStepped:Connect(function()
             local X, Y, Z = _CFrame:ToOrientation()
             return CFrame.new(_CFrame.Position) * CFrame.Angles(0, Y, 0)
         end
-        if menu.values[1].antiaim.direction["yaw base"].Dropdown == "targets" then
+        if menu.values[1].antiaim.direction["Yaw base"].Dropdown == "targets" then
             local Target
             local Closest = 9999
             for _,Player in next, Players:GetPlayers() do
