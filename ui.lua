@@ -35,15 +35,14 @@ end
 local function GetBodypart()
 end
 
-
 local menu
 do
     local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/scripts1001/skididi-toliet/main/dopdopdopp.lua"))()
 
-    menu = library.new([[Emerald <font color="rgb(80, 200, 120)">></font>]], "Emerald\\")
+    menu = library.new([[Emerald<font color="rgb(80, 200, 120)">.lua</font>]], "Emerald\\")
     local tabs = {
         menu.new_tab("rbxassetid://7300477598"),
-        menu.new_tab("rbxassetid://17138035097"),
+        menu.new_tab("rbxassetid://17137755033"),
         menu.new_tab("rbxassetid://7300480952"),
         menu.new_tab("rbxassetid://7300486042"),
         menu.new_tab("rbxassetid://7300489566"),
