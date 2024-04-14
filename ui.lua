@@ -44,7 +44,7 @@ do
         menu.new_tab("rbxassetid://7300477598"),
         menu.new_tab("rbxassetid://17138035097"),
         menu.new_tab("rbxassetid://7300480952"),
-        menu.new_tab("rbxassetid://7300486042"),
+        menu.new_tab("rbxassetid://17146700282"),
         menu.new_tab("rbxassetid://7300489566"),
     }
 
