@@ -323,7 +323,8 @@ do
         character.element("Slider", "power", {default = {min = 50, max = 200, default = 50}})
         character.element("Slider", "height", {default = {min = 7, max = 50, default = 15}})
         character.element("Toggle", "noclip"):add_keybind()
-        character.element("Textbox", "Disguise")
+        character.element("Toggle", "disguise"):add_keybind()
+        character.element("TextBox", "User ID")
 
         local NoclipLoop = RunService.Stepped:Connect(function()
             if not LocalPlayer.Character then return end
@@ -1091,7 +1092,7 @@ local notifications = notificationLibrary.new({
     
     TextFont = Enum.Font.Code,
     TextColor = Color3.fromRGB(0, 0, 0),
-    TextSize = 25,
+    TextSize = 15,
     
     TextStrokeTransparency = 0, 
     TextStrokeColor = Color3.fromRGB(80, 200, 120)
