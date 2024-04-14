@@ -323,6 +323,7 @@ do
         character.element("Slider", "power", {default = {min = 50, max = 200, default = 50}})
         character.element("Slider", "height", {default = {min = 7, max = 50, default = 15}})
         character.element("Toggle", "noclip"):add_keybind()
+        character.element("Textbox", "Disguise")
 
         local NoclipLoop = RunService.Stepped:Connect(function()
             if not LocalPlayer.Character then return end
