@@ -1091,7 +1091,7 @@ local notifications = notificationLibrary.new({
     
     TextFont = Enum.Font.Code,
     TextColor = Color3.fromRGB(0, 0, 0),
-    TextSize = 15,
+    TextSize = 25,
     
     TextStrokeTransparency = 0, 
     TextStrokeColor = Color3.fromRGB(80, 200, 120)
