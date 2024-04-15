@@ -184,7 +184,7 @@ function library.new(library_title, cfg_location)
         BackgroundColor3 = Color3.fromRGB(255, 255, 255),
         BackgroundTransparency = 1,
         Position = UDim2.new(0, 102, 0, 42),
-        Size = UDim2.new(0, 606, 0, 506),
+        Size = UDim2.new(0, 656, 0, 556),
     }, ImageLabel)
 
     local is_first_tab = true
